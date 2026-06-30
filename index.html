@@ -256,7 +256,8 @@ function App() {
   const [showGradeWarning, setShowGradeWarning] = useState(false);
   const [shareUnlocked, setShareUnlocked] = useState(false);
   const [showPoster, setShowPoster] = useState(false);
-  const [showFriendFull, setShowFriendFull] = useState(false); // 好友码放大
+  const [showFriendFull, setShowFriendFull] = useState(false);
+  const [showReward, setShowReward] = useState(false); // 好友码放大
 
   const result = useMemo(() => {
     const ns = parseInt(score, 10);
@@ -326,13 +327,24 @@ function App() {
         <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4">
           <div className='bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl text-center'>
             <h3 className="text-lg font-bold text-gray-800 mb-3">扫码添加专家微信</h3>
-            <img src="wx-friend.png" alt="加好友" className="w-64 h-64 mx-auto rounded-xl shadow-lg border-4 border-blue-900" />
+            <img src="/wx-friend.png" alt="加好友" className="w-64 h-64 mx-auto rounded-xl shadow-lg border-4 border-blue-900" />
             <p className="text-sm text-gray-500 mt-3">2026志愿填报一对一专家指导</p>
             <button onClick={() => setShowFriendFull(false)} className="mt-4 w-full bg-blue-900 text-white py-2 rounded-xl font-semibold hover:bg-blue-800 transition">关闭</button>
           </div>
         </div>
       )}
-      <FooterBar onShowFriend={() => setShowFriendFull(true)} />
+      {/* 赞赏码放大弹窗 */}
+      {showReward && (
+        <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl text-center">
+            <h3 className="text-lg font-bold text-gray-800 mb-3">赞赏支持</h3>
+            <img src="wx-reward.png" alt="赞赏" className="w-64 h-64 mx-auto rounded-xl shadow-lg border-4 border-yellow-400" />
+            <p className="text-sm text-gray-500 mt-3">感谢您的鼓励与支持</p>
+            <button onClick={() => setShowReward(false)} className="mt-4 w-full bg-blue-900 text-white py-2 rounded-xl font-semibold hover:bg-blue-800 transition">关闭</button>
+          </div>
+        </div>
+      )}
+      <FooterBar onShowFriend={() => setShowFriendFull(true)} onShowReward={() => setShowReward(true)} />
     </div>
   );
 }
@@ -519,7 +531,7 @@ function ResultsPage({ score, region, historyGrade, geoGrade, bioGrade, polGrade
         <p className="text-sm text-blue-200 mb-2">2026志愿填报疑难诊断</p>
         <p className="text-lg font-bold">一对一专家指导</p>
         <div className="mt-3 flex flex-col items-center">
-          <img src="wx-friend.png" alt="加好友" className="w-36 h-36 rounded-xl shadow-lg border-2 border-white cursor-pointer hover:opacity-80 transition" onClick={() => alert("请在浏览器中点击查看大图")} />
+          <img src="/wx-friend.png" alt="加好友" className="w-36 h-36 rounded-xl shadow-lg border-2 border-white cursor-pointer hover:opacity-80 transition" onClick={() => alert("请在浏览器中点击查看大图")} />
           <p className="text-xs text-blue-200 mt-2">扫码添加专家微信</p>
         </div>
       </div>
@@ -546,7 +558,7 @@ function GradeWarning() {
   );
 }
 
-function FooterBar({ onShowFriend }) {
+function FooterBar({ onShowFriend, onShowReward }) {
   return (
     <footer className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-blue-900 to-indigo-800 text-white py-3 px-4 shadow-inner z-40">
       <div className='max-w-md mx-auto flex items-center justify-between gap-3'>
@@ -555,7 +567,8 @@ function FooterBar({ onShowFriend }) {
           <p className="text-sm font-bold">一对一专家指导</p>
         </div>
         <div className='flex items-center gap-2'>
-          <img src="wx-friend.png" alt="加好友" className="w-12 h-12 rounded-lg border-2 border-white cursor-pointer hover:opacity-80 transition" onClick={onShowFriend} /><img src="wx-reward.png" alt="赞赏" className="w-12 h-12 rounded-lg border-2 border-yellow-400 cursor-pointer hover:opacity-80 transition" />
+          <img src="/wx-friend.png" alt="加好友" className="w-12 h-12 rounded-lg border-2 border-white cursor-pointer hover:opacity-80 transition" onClick={onShowFriend} />
+          <img src="wx-reward.png" alt="赞赏" className="w-12 h-12 rounded-lg border-2 border-yellow-400 cursor-pointer hover:opacity-80 transition" onClick={onShowReward} />
         </div>
       </div>
     </footer>
@@ -587,7 +600,7 @@ function getCategoryColor(category) {
     img.crossOrigin = 'anonymous';
     img.onload = () => setFriendImg(img);
     img.onerror = () => console.warn('Friend QR code not found');
-    img.src = 'wx-friend.png';
+    img.src = '/wx-friend.png';
   }, []);
 
   useEffect(() => {
